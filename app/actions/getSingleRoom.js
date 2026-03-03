@@ -1,29 +1,29 @@
 'use server';
 
 import { createAdminClient } from "@/config/appwrite";
-import { redirect } from "next/navigation";
+import { redirect } from "next/dist/server/api-utils";
 
-
-async function getAllRooms() {
+async function getSingleRoom(id) {
     try
     {
         const adminClient = await createAdminClient();
         const databases = adminClient.getDatabases();
 
-        const {documents:rooms} = await databases.listDocuments(
+        const room = await databases.getDocument(
             process.env.APPWRITE_PROJECT_DATABASE,
-            process.env.APPWRITE_PROJECT_TABLE_ROOMS
+            process.env.APPWRITE_PROJECT_TABLE_ROOMS,
+            id
         );
 
        // revalidatePath('/', 'layout')
 
-        return rooms;
+        return room;
     }
     catch (error)
     {
-        console.error("Error fetching rooms:", error);
+        console.error("Error fetching room:", error);
         redirect("/error");
     }
 }
 
-export default getAllRooms;
+export default getSingleRoom;

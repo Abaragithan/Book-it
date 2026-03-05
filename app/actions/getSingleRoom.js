@@ -4,6 +4,7 @@ import { createAdminClient } from "@/config/appwrite";
 import { redirect } from "next/dist/server/api-utils";
 
 async function getSingleRoom(id) {
+
     try
     {
         const adminClient = await createAdminClient();

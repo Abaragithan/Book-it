@@ -1,5 +1,4 @@
 import { Client , Databases, Account, Storage } from 'node-appwrite';
-import { Avatars } from 'node-appwrite';
 
 const createAdminClient = async () => {
     const client = new Client()
@@ -16,10 +15,7 @@ const createAdminClient = async () => {
         },
         getStorage() {
             return new Storage(client);
-        },
-        getAvatars() {
-            return new Avatars(client);
-        },
+        }
     };
 }
 
@@ -39,10 +35,7 @@ const createSessionClient = async (session ) => {
         },
         getDatabases() {
             return new Databases(client);
-        },
-        getAvatars() {
-            return new Avatars(client);
-        },
+        }
     };
 }
 

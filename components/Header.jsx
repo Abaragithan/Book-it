@@ -1,8 +1,28 @@
+'use client';
+
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import logo from "@/assets/images/logo.svg"
 import { FaUser, FaSignInAlt, FaSignOutAlt, FaBuilding} from "react-icons/fa"
+import destroySession from "@/app/actions/destroySession"
+import { toast } from "react-toastify";
+
 const Header = () => {
+
+    const router = useRouter();
+
+    const handelLogout = async () => {
+        const {success, error } = await destroySession();
+        if(success) {
+            router.push('/login');
+            toast.success("Logged out successfully");
+        } else {
+            toast.error(error || "Error logging out");
+            console.log("Logout Error", error);
+        }
+    }
+
     return (
         <header className="bg-gray-100">
             <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -54,12 +74,12 @@ const Header = () => {
                             <Link href="/rooms/my">
                                 <FaBuilding className="fa fa-building"></FaBuilding> My Rooms
                             </Link>
-                            <Link
-                                href="/logout"
+                            <button
                                 className="mx-3 text-gray-800 hover:text-gray-600"
+                                onClick={handelLogout}
                             >
                                 <FaSignOutAlt className="fa fa-sign-out"></FaSignOutAlt> Sign Out
-                            </Link>
+                            </button>
                         </div>
                     </div>
                 </div>

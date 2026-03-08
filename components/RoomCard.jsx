@@ -25,7 +25,7 @@ const RoomCard = ({ room }) => {
                     </p>
                     <p className="text-sm text-gray-600">
                         <span className="font-semibold text-gray-800"> Price:</span>
-                        ${room.price}/hour
+                        ${room.price_per_hour}/hour
                     </p>
                 </div>
             </div>

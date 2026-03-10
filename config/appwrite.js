@@ -23,7 +23,7 @@ const createAdminClient = async () => {
 const createSessionClient = async (session ) => {
     const client = new Client()
         .setEndpoint(process.env.APPWRITE_ENDPOINT)
-        .setProject(process.env.APPWRITE_PROJECT_ID);
+        .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
 
     if (session) {
         client.setSession(session);

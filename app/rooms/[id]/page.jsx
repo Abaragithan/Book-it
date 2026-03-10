@@ -5,7 +5,7 @@ import { FaChevronLeft } from "react-icons/fa";
 import BookingForm from "@/components/BookingForm";
 import getSingleRoom from "@/app/actions/getSingleRoom";
 
-const RoomPage =  async ({ params }) => {
+const RoomPage = async ({ params }) => {
   const { id } = await params;
 
   const room = await getSingleRoom(id);
@@ -13,6 +13,11 @@ const RoomPage =  async ({ params }) => {
   if (!room) return (
     <Heading title={'room not found'} />
   );
+
+  const bucketID = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_STORAGE_BUCKET_ROOMS;
+  const projectID = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
+  const imageUrl = `https://sgp.cloud.appwrite.io/v1/storage/buckets/${bucketID}/files/${room.image}/view?project=${projectID}`;
+  const imageSrc = room.image ? imageUrl : '/images/rooms/no-image.jpg';
 
   return (
     <>
@@ -22,14 +27,14 @@ const RoomPage =  async ({ params }) => {
           href="/"
           className="flex items-center text-gray-600 hover:text-gray-800 mb-4"
         >
-          <FaChevronLeft className="inline mr-1"/>
+          <FaChevronLeft className="inline mr-1" />
           <span className="ml-2">Back to Rooms</span>
         </Link>
-        
+
 
         <div className="flex flex-col sm:flex-row sm:space-x-6">
           <Image
-            src={`/images/rooms/${room.image}`}
+            src={imageSrc}
             alt={room.name}
             width={100}
             height={400}
@@ -59,7 +64,7 @@ const RoomPage =  async ({ params }) => {
           </div>
         </div>
 
-        <BookingForm/>
+        <BookingForm />
       </div>
     </>
 

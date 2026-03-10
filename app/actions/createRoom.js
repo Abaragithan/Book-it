@@ -9,14 +9,33 @@ async function createRoom(previousState, formData) {
     try {
         const { user, isAuthenticated } = await checkAuth();
 
+        const adminClient = await createAdminClient();
+        const databases = adminClient.getDatabases();
+        const storage = adminClient.getStorage();
+
+        let imageID;
+
+        const image = formData.get('image')
+        if (image && image.size > 0 & image.name !== 'undefined') {
+            try {
+                const response = await storage.createFile('rooms', ID.unique(), image);
+                imageID = response.$id;
+            } catch (error) {
+                console.log("error uploading image", error);
+                return {
+                    error: "error uploading image"
+                }
+            }
+        } else {
+            console.log('no image file is provided or file is invalid');
+            
+        }
+
         console.log("Auth check:", { isAuthenticated, user }); // temporary debug log
 
         if (!isAuthenticated) {
             return { error: "You must be logged in to create a room" };
         }
-
-        const adminClient = await createAdminClient();
-        const databases = adminClient.getDatabases();
 
         const newRoom = await databases.createDocument(
             process.env.APPWRITE_PROJECT_DATABASE,
@@ -33,7 +52,7 @@ async function createRoom(previousState, formData) {
                 availability: formData.get('availability'),
                 price_per_hour: formData.get('price_per_hour'),
                 amenities: formData.get('amenities'),
-                image: "/images/rooms/room-1.jpg"
+                image: imageID
             }
         );
 
